@@ -38,3 +38,7 @@
    };
    ```
 
+yarn build 
+
+
+npx wrangler deploy
