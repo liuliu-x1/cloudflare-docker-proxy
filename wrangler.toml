@@ -3,7 +3,7 @@ main = "dist/index.js"
 compatibility_date = "2024-03-27"
 
 [vars]
-CUSTOM_DOMAIN = "docker.lixd.cn"
+CUSTOM_DOMAIN = "ssrtest1.top"
 MODE = "production"
 TARGET_UPSTREAM = "https://registry-1.docker.io"
 

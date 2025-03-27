@@ -9,7 +9,7 @@ const dockerHub = "https://registry-1.docker.io";
 
 const routes = {
   // production
-  ["docker." + CUSTOM_DOMAIN]: dockerHub,
+  [CUSTOM_DOMAIN]: dockerHub,
   ["quay." + CUSTOM_DOMAIN]: "https://quay.io",
   ["gcr." + CUSTOM_DOMAIN]: "https://gcr.io",
   ["k8s-gcr." + CUSTOM_DOMAIN]: "https://k8s.gcr.io",
@@ -35,6 +35,11 @@ function routeByHosts(host) {
 async function handleRequest(request) {
   const url = new URL(request.url);
   const upstream = routeByHosts(url.hostname);
+
+  console.log("原始请求 URL:", request.url);
+  console.log("解析后的 hostname:", url.hostname);
+  console.log("路由到的上游:", upstream);
+
   if (url.pathname === "/") {
     return new Response(DOCS, {
       status: 200,
@@ -112,13 +117,20 @@ async function handleRequest(request) {
   }
   // foward requests
   const newUrl = new URL(upstream + url.pathname);
+  console.log("转发请求到上游 URL:", newUrl.toString());
   const newReq = new Request(newUrl, {
     method: request.method,
     headers: request.headers,
     // don't follow redirect to dockerhub blob upstream
     redirect: isDockerHub ? "manual" : "follow",
   });
+  console.log("转发请求对象:", JSON.stringify({
+    url: newReq.url,
+    method: newReq.method,
+    headers: Object.fromEntries(newReq.headers.entries()),
+  }));
   const resp = await fetch(newReq);
+  console.log("上游响应状态:", resp.status);
   if (resp.status == 401) {
     return responseUnauthorized(url);
   }
