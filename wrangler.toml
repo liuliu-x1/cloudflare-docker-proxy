@@ -1,39 +1,44 @@
 name = "cloudflare-docker-proxy"
-compatibility_date = "2023-12-01"
+main = "dist/index.js"
+compatibility_date = "2024-03-27"
+
+[vars]
+CUSTOM_DOMAIN = "docker.lixd.cn"
+MODE = "production"
+TARGET_UPSTREAM = "https://registry-1.docker.io"
 
 [dev]
 ip = "0.0.0.0"
 port = 8787
 local_protocol = "http"
 
-[env.vars]
-CUSTOM_DOMAIN = "libcuda.so"
-
 [env.dev.vars]
 MODE = "debug"
 TARGET_UPSTREAM = "https://registry-1.docker.io"
-CUSTOM_DOMAIN = "exmaple.com"
+CUSTOM_DOMAIN = "example.com"
 
 [env.production]
 name = "cloudflare-docker-proxy"
-# routes = [
-#   { pattern = "docker.libcuda.so", custom_domain = true },
-#   { pattern = "quay.libcuda.so", custom_domain = true },
-#   { pattern = "gcr.libcuda.so", custom_domain = true },
-#   { pattern = "k8s-gcr.libcuda.so", custom_domain = true },
-#   { pattern = "k8s.libcuda.so", custom_domain = true },
-#   { pattern = "ghcr.libcuda.so", custom_domain = true },
-#   { pattern = "cloudsmith.libcuda.so", custom_domain = true },
-# ]
+routes = [
+  { pattern = "docker.ssrtest1.top", custom_domain = true },
+  { pattern = "quay.ssrtest1.top", custom_domain = true },
+  { pattern = "gcr.ssrtest1.top", custom_domain = true },
+  { pattern = "k8s-gcr.ssrtest1.top", custom_domain = true },
+  { pattern = "k8s.ssrtest1.top", custom_domain = true },
+  { pattern = "ghcr.ssrtest1.top", custom_domain = true },
+  { pattern = "cloudsmith.ssrtest1.top", custom_domain = true },
+]
 
 [env.production.vars]
 MODE = "production"
-TARGET_UPSTREAM = ""
+TARGET_UPSTREAM = "https://registry-1.docker.io"
+CUSTOM_DOMAIN = "ssrtest1.top"
 
 [env.staging]
 name = "cloudflare-docker-proxy-staging"
-# route = { pattern = "docker-staging.libcuda.so", custom_domain = true }
+route = { pattern = "docker-staging.ssrtest1.top", custom_domain = true }
 
 [env.staging.vars]
 MODE = "staging"
-TARGET_UPSTREAM = ""
+TARGET_UPSTREAM = "https://registry-1.docker.io"
+CUSTOM_DOMAIN = "staging.ssrtest1.top"
